@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Split to copyable</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <script type="text/javascript">
+    function splitAndCreate(textAreaElement) {
+      var oldDivs = document.getElementsByTagName("div");
+      for (var i=oldDivs.length-1; i>=0; i--) {
+        var oldDiv = oldDivs[i];
+        oldDiv.parentNode.removeChild(oldDiv);
+      }
+      var parts = textAreaElement.value.split("\n");
+      for (var i=0; i<parts.length; i++) {
+        var part = parts[i];
+        var partDiv = document.createElement("div");
+        var input = document.createElement("input");
+        var inputId = "inp" + i;
+        input.value = part;
+        input.id = inputId;
+        partDiv.appendChild(input);
+        var partToClipBtn = document.createElement("button");
+        partToClipBtn.appendChild(document.createTextNode("copy"));
+        partToClipBtn.setAttribute("data-clipboard-target", "#" + inputId);
+        partDiv.appendChild(partToClipBtn);
+        document.body.appendChild(partDiv);
+      }
+    }
+  </script>
+</head>
+<body>
+  <textarea id="splitSource" onkeyup="splitAndCreate(this)" style="width:99%; height:300px"></textarea>
+</body>
+</html>
